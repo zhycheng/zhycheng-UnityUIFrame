@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIPage : MonoBehaviour {
+public abstract  class UIPage : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -13,5 +14,16 @@ public class UIPage : MonoBehaviour {
 	void Update () {
 		
 	}
-	
+
+    public virtual void Refresh(System.Object obj)
+    {
+
+    }
+
+	public abstract string GetPageName();
+
+	public virtual void OnUIMessage(UIMEssageType type,string name)
+	{
+		//throw new NotImplementedException();
+	}
 }

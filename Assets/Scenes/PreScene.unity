@@ -181,7 +181,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 21300000, guid: dbe6d5f6edc0a684bb78d60d72e691ef,
       type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: dbe6d5f6edc0a684bb78d60d72e691ef, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: cd7885c5f1c41d14eafd1f852f21730a, type: 3}
     m_DisabledSprite: {fileID: 21300000, guid: cd7885c5f1c41d14eafd1f852f21730a, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -826,6 +826,18 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114001235620310550, guid: 721a7a011b867fc418107feba1b09a9a,
+        type: 2}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a70549fd4bb47a647b440b380025a7b4,
+        type: 3}
+    - target: {fileID: 114649783217956672, guid: 721a7a011b867fc418107feba1b09a9a,
+        type: 2}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: cd7885c5f1c41d14eafd1f852f21730a,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 721a7a011b867fc418107feba1b09a9a, type: 2}
   m_IsPrefabParent: 0
@@ -1673,7 +1685,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 21300000, guid: a43c6555a71dac94097d201898d48fa5,
       type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: a43c6555a71dac94097d201898d48fa5, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: a70549fd4bb47a647b440b380025a7b4, type: 3}
     m_DisabledSprite: {fileID: 21300000, guid: a70549fd4bb47a647b440b380025a7b4, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal

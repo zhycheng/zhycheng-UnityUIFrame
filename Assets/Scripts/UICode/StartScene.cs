@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameMain : MonoBehaviour {
+public class StartScene : UIPage {
+	public override string GetPageName()
+	{
+		return "StarScene";
+	}
 
 	// Use this for initialization
 	void Start () {
