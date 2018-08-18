@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -42,25 +43,18 @@ public class UIManager
 	private void OnSceneUnloaded(Scene scene)
 	{
 		UnityEngine.Debug.Log("UIManager "+scene.name+" unloaded");
-		if (pushSceneMessage.ContainsKey(scene.name))
-		{
-			List<UIPage> list = pushSceneMessage[scene.name];
-			for (int i = 0; i < list.Count; i++)
-			{
-				list[i].OnUIMessage(UIMEssageType.PushScene, scene.name);
-			}
-		}
+		//在scene unload之前就处理好了
 	}
 
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
 		UnityEngine.Debug.Log("UIManager " + scene.name + " loaded mode is "+ mode.ToString());
-		if(popSceneMessage.ContainsKey(scene.name))
+		if(pushSceneMessage.ContainsKey(scene.name))
 		{
-			List<UIPage> list = popSceneMessage[scene.name];
+			List<UIPage> list = pushSceneMessage[scene.name];
 			for(int i=0;i< list.Count;i++)
 			{
-				list[i].OnUIMessage(UIMEssageType.PopScene, scene.name);
+				list[i].OnUIMessage(UIMEssageType.PushScene, scene.name);
 			}
 		}
 	}
@@ -173,8 +167,18 @@ public class UIManager
         }
 		GameObject prefabObject = Resources.Load<GameObject>(prefabPath);
 		GameObject initPrefab = GameObject.Instantiate(prefabObject, canvasTransform);
-		initPrefab.name = initPrefab.GetComponent<UIPage>().GetPageName();
+		string gameObjectName= initPrefab.GetComponent<UIPage>().GetPageName();
+		initPrefab.name = gameObjectName;
 		pageList.Add(initPrefab.GetComponent<UIPage>());
+		//传递消息
+		if(pushPageMessage.ContainsKey(gameObjectName))
+		{
+			List<UIPage> list = pushPageMessage[gameObjectName];
+			for(int i=0;i<list.Count;i++)
+			{
+				list[i].OnUIMessage(UIMEssageType.PushPage, gameObjectName);
+			}
+		}
 
     }
         
@@ -198,11 +202,20 @@ public class UIManager
             return;
         }
         UIPage up = pageList[pageList.Count - 1];
-        string gameObjectName = up.gameObject.name;
+        string gameObjectName = up.GetPageName();
         Transform childTransform=canvasTransform.Find(gameObjectName);
         GameObject.Destroy(childTransform.gameObject);
         pageList.Remove(up);
-    }
+		//传递消息
+		if (popPageMessage.ContainsKey(gameObjectName))
+		{
+			List<UIPage> list = popPageMessage[gameObjectName];
+			for (int i = 0; i < list.Count; i++)
+			{
+				list[i].OnUIMessage(UIMEssageType.PopPage, gameObjectName);
+			}
+		}
+	}
 
 	public void PopPage(string pageName)
 	{
@@ -228,13 +241,22 @@ public class UIManager
 			UnityEngine.Debug.LogError("can't find the uipage by the name");
 			return;
 		}
-		string gameObjectName = up.gameObject.name;
+		string gameObjectName = up.GetPageName();
 		Transform childTransform = canvasTransform.Find(gameObjectName);
 		GameObject.Destroy(childTransform.gameObject);
 		pageList.Remove(up);
+		//传递消息
+		if (popPageMessage.ContainsKey(gameObjectName))
+		{
+			List<UIPage> list = popPageMessage[gameObjectName];
+			for (int i = 0; i < list.Count; i++)
+			{
+				list[i].OnUIMessage(UIMEssageType.PopPage, gameObjectName);
+			}
+		}
 	}
 
-	public void RefreshPageByName(string name,GameObject obj)
+	public void RefreshPageByName(string name, System.Object obj)
 	{
 		UIPage page = this.GetUIPageByName(name);
 		if(page==null)
@@ -259,7 +281,32 @@ public class UIManager
 
 	public void ReplaceScene(string name)
 	{
+		//先发送消息
+		//当前所有page退出消息
+		for(int i=0;i<pageList.Count;i++)
+		{
+			string pageName = pageList[i].GetPageName();
+			if(popPageMessage.ContainsKey(pageName))
+			{
+				List<UIPage> allpage = popPageMessage[pageName];
+				for(int k=0;k<allpage.Count;k++)
+				{
+					allpage[k].OnUIMessage(UIMEssageType.PopPage, pageName);
+				}
+			}
+		}
+		//当前scene的退出消息
+		Scene cur = SceneManager.GetActiveScene();
+		string sceneName = cur.name;
+		if(popSceneMessage.ContainsKey(sceneName))
+		{
+			List<UIPage> list = popSceneMessage[sceneName];
+			for(int i=0;i<list.Count;i++)
+			{
+				list[i].OnUIMessage(UIMEssageType.PopScene,sceneName);
+			}
+		}
+		pageList.Clear();
 		SceneManager.LoadSceneAsync(name);
-        pageList.Clear();
     }
 }
