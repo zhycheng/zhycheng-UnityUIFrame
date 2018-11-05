@@ -14,6 +14,7 @@ public class PreScene : UIPage
         loginBtn.onClick.AddListener(onLoginBtnClicked);
         logoutBtn.onClick.AddListener(onLogoutBtnClicked);
         savePasswordToggle.onValueChanged.AddListener(onToogleValueChanged);
+		UIManager.Instance().RegisterUIMessage("MainScene", UIMEssageType.PopScene, this);
     }
     private void onLoginBtnClicked()
     {
@@ -41,10 +42,17 @@ public class PreScene : UIPage
         loginBtn.onClick.RemoveListener(onLoginBtnClicked);
         logoutBtn.onClick.RemoveListener(onLogoutBtnClicked);
         savePasswordToggle.onValueChanged.RemoveListener(onToogleValueChanged);
-    }
+		UIManager.Instance().UnRegisterUIMessage("MainScene", UIMEssageType.PopScene, this);
+
+	}
 
 	public override string GetPageName()
 	{
 		return "PreScene";
+	}
+
+	public override void OnUIMessage(UIMEssageType type, string name)
+	{
+		UnityEngine.Debug.LogError(name);
 	}
 }
