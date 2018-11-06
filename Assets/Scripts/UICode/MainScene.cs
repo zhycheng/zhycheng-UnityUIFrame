@@ -15,7 +15,7 @@ public class MainScene : UIPage {
     private void showPage()
     {
 		//UnityEngine.Debug.LogError("show page info");
-		UIManager.Instance().PushPage("Prefab/ShowInfoPage");
+		UIManager.Instance().PushPage("Prefab/ShowInfoPage","come from mainscene");
     }
 
 	private void closeScene()

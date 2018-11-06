@@ -5,6 +5,11 @@ using UnityEngine;
 
 public abstract  class UIPage : MonoBehaviour {
 
+	public virtual void OnReceiveData(System.Object data)
+	{
+
+	}
+
 	// Use this for initialization
 	void Start () {
 		

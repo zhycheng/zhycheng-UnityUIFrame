@@ -8,11 +8,24 @@ public class ShowInfoPage : UIPage {
 	[SerializeField] Button closeBtn;
 	// Use this for initialization
 	void Start () {
+		Debug.LogError("Start ");
 		okBtn.onClick.AddListener(onOkbtnClicked);
 		closeBtn.onClick.AddListener(onCloseBtnClosed);
 		UIManager.Instance().RegisterUIMessage("SurePage", UIMEssageType.PushPage, this);
 		UIManager.Instance().RegisterUIMessage("SurePage", UIMEssageType.PopPage, this);
 	}
+
+	private void OnEnable()
+	{
+		Debug.LogError("OnEnable ");
+	}
+
+	private void Awake()
+	{
+		Debug.LogError("Awake ");
+	}
+
+
 
 	private void onCloseBtnClosed()
 	{
@@ -40,6 +53,15 @@ public class ShowInfoPage : UIPage {
 	{
 		return "ShowInfoPage";
 	}
+
+	public override void OnReceiveData(System.Object data)
+	{
+		if(data!=null)
+		{
+			Debug.LogError("OnReceiveData is "+ data);
+		}
+	}
+
 	public override void OnUIMessage(UIMEssageType type, string name)
 	{
 		UnityEngine.Debug.LogError("Message type is "+type.ToString()+" "+name);

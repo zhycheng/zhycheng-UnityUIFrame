@@ -165,7 +165,7 @@ public class UIManager
 	}
 
 
-	public void PushPage(string prefabPath)
+	public void PushPage(string prefabPath,System.Object data=null)
 	{
 		Scene cur = SceneManager.GetActiveScene();
 		Transform canvasTransform = null;
@@ -186,6 +186,7 @@ public class UIManager
 		GameObject prefabObject = Resources.Load<GameObject>(prefabPath);
 		GameObject initPrefab = GameObject.Instantiate(prefabObject, canvasTransform);
 		string gameObjectName= initPrefab.GetComponent<UIPage>().GetPageName();
+		initPrefab.GetComponent<UIPage>().OnReceiveData(data);
 		initPrefab.name = gameObjectName;
 		if(scenePageInfo.ContainsKey(cur.name))
 		{
